@@ -1,7 +1,7 @@
 package com.domo.account.service;
 
 import com.domo.account.domain.Account;
-import com.domo.account.domain.AccountStatus;
+import com.domo.account.type.AccountStatus;
 import com.domo.account.repository.AccountRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

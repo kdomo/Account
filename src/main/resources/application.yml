@@ -11,7 +11,7 @@ spring:
     console:
       enabled: true
   jpa:
-    defer-datasource-initialization: true
+    defer-datasource-initialization: true # 테이블 생성 이후 데이터를 넣는 설정
     database-platform: H2
     hibernate:
       ddl-auto: create-drop
