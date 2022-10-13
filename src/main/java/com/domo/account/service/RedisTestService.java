@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class RedisServiceTest {
+public class RedisTestService {
     private final RedissonClient redissonClient;
 
     public String getLock() {

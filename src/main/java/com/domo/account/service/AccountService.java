@@ -5,6 +5,7 @@ import com.domo.account.domain.AccountStatus;
 import com.domo.account.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.transaction.Transactional;
 
@@ -21,5 +22,10 @@ public class AccountService {
                 .accountStatus(AccountStatus.IN_USE)
                 .build();
         accountRepository.save(account);
+    }
+
+    @Transactional
+    public Account getAccount(Long id) {
+        return accountRepository.findById(id).get();
     }
 }
