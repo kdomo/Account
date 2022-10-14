@@ -253,7 +253,7 @@ class AccountServiceTest {
     }
 
     @Test
-    @DisplayName("계좌 해지 실패 - 이미 해지된 계자")
+    @DisplayName("계좌 해지 실패 - 이미 해지된 계좌")
     void deleteAccount_AlreadyUnregistered() {
         //given
         AccountUser user = AccountUser.builder()
