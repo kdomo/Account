@@ -251,4 +251,29 @@ class AccountServiceTest {
         //then
         assertEquals(ErrorCode.BALANCE_NOT_EMPTY, accountException.getErrorCode());
     }
+
+    @Test
+    @DisplayName("계좌 해지 실패 - 이미 해지된 계자")
+    void deleteAccount_AlreadyUnregistered() {
+        //given
+        AccountUser user = AccountUser.builder()
+                .id(12L)
+                .name("domo")
+                .build();
+        given(accountUserRepository.findById(anyLong()))
+                .willReturn(Optional.of(user));
+        given(accountRepository.findByAccountNumber(anyString()))
+                .willReturn(Optional.ofNullable(Account.builder()
+                        .balance(0L)
+                        .accountStatus(AccountStatus.UNREGISTERED)
+                        .accountUser(user)
+                        .build()));
+
+        //when
+        AccountException accountException = assertThrows(AccountException.class,
+                () -> accountService.deleteAccount(1L, "1234567890"));
+
+        //then
+        assertEquals(ErrorCode.ACCOUNT_ALREADY_UNREGISTERED, accountException.getErrorCode());
+    }
 }
