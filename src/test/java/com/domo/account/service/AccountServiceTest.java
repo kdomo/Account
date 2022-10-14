@@ -17,8 +17,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
+import static com.domo.account.type.ErrorCode.USER_NOT_FOUND;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
@@ -49,7 +52,7 @@ class AccountServiceTest {
                 .willReturn(Optional.of(user));
         given(accountRepository.findFirstByOrderByIdDesc())
                 .willReturn(Optional.of(Account.builder()
-                                .accountNumber("1000000012").build()));
+                        .accountNumber("1000000012").build()));
         given(accountRepository.save(any()))
                 .willReturn(Account.builder()
                         .accountUser(user)
@@ -64,7 +67,7 @@ class AccountServiceTest {
         //then
         verify(accountRepository, times(1)).save(captor.capture());
         assertEquals(12L, accountDto.getUserId());
-        assertEquals("1000000013",captor.getValue().getAccountNumber());
+        assertEquals("1000000013", captor.getValue().getAccountNumber());
 
     }
 
@@ -94,7 +97,7 @@ class AccountServiceTest {
         //then
         verify(accountRepository, times(1)).save(captor.capture());
         assertEquals(15L, accountDto.getUserId());
-        assertEquals("1000000000",captor.getValue().getAccountNumber());
+        assertEquals("1000000000", captor.getValue().getAccountNumber());
 
     }
 
@@ -160,8 +163,8 @@ class AccountServiceTest {
         //then
         verify(accountRepository, times(1)).save(captor.capture());
         assertEquals(12L, accountDto.getUserId());
-        assertEquals("1000000012",captor.getValue().getAccountNumber());
-        assertEquals(AccountStatus.UNREGISTERED,captor.getValue().getAccountStatus());
+        assertEquals("1000000012", captor.getValue().getAccountNumber());
+        assertEquals(AccountStatus.UNREGISTERED, captor.getValue().getAccountStatus());
     }
 
     @Test
@@ -275,5 +278,58 @@ class AccountServiceTest {
 
         //then
         assertEquals(ErrorCode.ACCOUNT_ALREADY_UNREGISTERED, accountException.getErrorCode());
+    }
+
+    @Test
+    @DisplayName("계좌 조회 성공")
+    void successGetAccountsByUserId() {
+        //given
+        AccountUser user = AccountUser.builder()
+                .id(12L)
+                .name("domo")
+                .build();
+        List<Account> accounts = Arrays.asList(
+                Account.builder()
+                        .accountUser(user)
+                        .accountNumber("1000000000")
+                        .balance(1000L)
+                        .build(),
+                Account.builder()
+                        .accountUser(user)
+                        .accountNumber("1000000001")
+                        .balance(2000L)
+                        .build()
+        );
+
+        given(accountUserRepository.findById(anyLong()))
+                .willReturn(Optional.of(user));
+        given(accountRepository.findByAccountUser(any()))
+                .willReturn(accounts);
+
+        //when
+        List<AccountDto> accountDtos = accountService.getAccountsByUserId(1L);
+
+        //then
+        assertEquals(2, accountDtos.size());
+        assertEquals("1000000000", accountDtos.get(0).getAccountNumber());
+        assertEquals(1000, accountDtos.get(0).getBalance());
+        assertEquals("1000000001", accountDtos.get(1).getAccountNumber());
+        assertEquals(2000, accountDtos.get(1).getBalance());
+    }
+
+    @Test
+    @DisplayName("계좌 조회 실패 - 사용자가 없음")
+    void failedToGetAccounts() {
+        //given
+        given(accountUserRepository.findById(anyLong()))
+                .willReturn(Optional.empty());
+
+        //when
+        AccountException accountException = assertThrows(AccountException.class,
+                () -> accountService.getAccountsByUserId(1L));
+
+        //then
+        assertEquals(USER_NOT_FOUND, accountException.getErrorCode());
+
     }
 }
