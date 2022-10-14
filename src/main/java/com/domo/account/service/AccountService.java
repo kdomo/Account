@@ -6,16 +6,16 @@ import com.domo.account.dto.AccountDto;
 import com.domo.account.exception.AccountException;
 import com.domo.account.repository.AccountRepository;
 import com.domo.account.repository.AccountUserRepository;
-import com.domo.account.type.AccountStatus;
 import com.domo.account.type.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-
 import java.time.LocalDateTime;
+import java.util.Objects;
 
-import static com.domo.account.type.AccountStatus.*;
+import static com.domo.account.type.AccountStatus.IN_USE;
+import static com.domo.account.type.AccountStatus.UNREGISTERED;
 
 @Service
 @RequiredArgsConstructor
@@ -66,5 +66,38 @@ public class AccountService {
             throw new RuntimeException("Minus");
         }
         return accountRepository.findById(id).get();
+    }
+
+    @Transactional
+    public AccountDto deleteAccount(Long userId, String accountNumber) {
+        AccountUser accountUser = accountUserRepository.findById(userId)
+                .orElseThrow(() -> new AccountException(ErrorCode.USER_NOT_FOUND));
+
+        Account account = accountRepository.findByAccountNumber(accountNumber)
+                .orElseThrow(() -> new AccountException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        validateDeleteAccount(accountUser, account);
+
+        account.setAccountStatus(UNREGISTERED);
+        account.setUnRegisteredAt(LocalDateTime.now());
+
+        //save가 없어도 영속성 컨텍스트에 더티체에 의해 업데이트 된다.
+        accountRepository.save(account);
+
+        return AccountDto.fromEntity(account);
+    }
+
+    private void validateDeleteAccount(AccountUser accountUser, Account account) {
+        if (!Objects.equals(accountUser.getId(), account.getAccountUser().getId())) {
+            throw new AccountException(ErrorCode.USER_ACCOUNT_UN_MATCH);
+        }
+
+        if (account.getAccountStatus() == UNREGISTERED) {
+            throw new AccountException(ErrorCode.ACCOUNT_ALREADY_UNREGISTERED);
+        }
+
+        if (account.getBalance() > 0) {
+            throw new AccountException(ErrorCode.BALANCE_NOT_EMPTY);
+        }
     }
 }

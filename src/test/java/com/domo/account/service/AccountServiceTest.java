@@ -20,8 +20,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -39,6 +38,7 @@ class AccountServiceTest {
     private AccountService accountService;
 
     @Test
+    @DisplayName("계좌 생성 성공")
     void createAccountSuccess() {
         //given
         AccountUser user = AccountUser.builder()
@@ -69,6 +69,7 @@ class AccountServiceTest {
     }
 
     @Test
+    @DisplayName("계좌번호 첫번째 1000000000")
     void createFirstAccount() {
         //given
         AccountUser user = AccountUser.builder()
@@ -98,7 +99,7 @@ class AccountServiceTest {
     }
 
     @Test
-    @DisplayName("해당 유저 없음 - 계좌 생성 실패")
+    @DisplayName("계좌 생성 실패")
     void createAccount_UserNotFound() {
         //given
 
@@ -111,7 +112,6 @@ class AccountServiceTest {
 
         //then
         assertEquals(ErrorCode.USER_NOT_FOUND, accountException.getErrorCode());
-
     }
 
     @Test

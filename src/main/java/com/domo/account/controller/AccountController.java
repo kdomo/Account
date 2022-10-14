@@ -3,6 +3,7 @@ package com.domo.account.controller;
 import com.domo.account.domain.Account;
 import com.domo.account.dto.AccountDto;
 import com.domo.account.dto.CreateAccount;
+import com.domo.account.dto.DeleteAccount;
 import com.domo.account.service.AccountService;
 import com.domo.account.service.RedisTestService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,15 @@ public class AccountController {
         return CreateAccount.Response.from(accountService.createAccount(
                 request.getUserId(),
                 request.getInitialBalance()));
+    }
+
+    @DeleteMapping("/account")
+    public DeleteAccount.Response deleteAccount(
+            @RequestBody @Valid DeleteAccount.Request request
+    ){
+        return DeleteAccount.Response.from(accountService.deleteAccount(
+                request.getUserId(),
+                request.getAccountNumber()));
     }
     @GetMapping("get-lock")
     public String getLock() {
