@@ -9,6 +9,7 @@ import com.domo.account.service.AccountService;
 import com.domo.account.service.RedisTestService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -43,6 +44,7 @@ class AccountControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
+    @DisplayName("계좌 생성 성공")
     void successCreateAccount() throws Exception {
         //given
         given(accountService.createAccount(anyLong(), anyLong()))
@@ -69,26 +71,9 @@ class AccountControllerTest {
 
     }
 
-    @Test
-    void successGetAccount() throws Exception {
-        //given
-        given(accountService.getAccount(anyLong()))
-                .willReturn(Account.builder()
-                        .accountNumber("3456")
-                        .accountStatus(AccountStatus.IN_USE)
-                        .build());
-        //when
-
-
-        //then
-        mockMvc.perform(get("/account/687"))
-                .andDo(print())
-                .andExpect(jsonPath("$.accountNumber").value("3456"))
-                .andExpect(jsonPath("$.accountStatus").value("IN_USE"))
-                .andExpect(status().isOk());
-    }
 
     @Test
+    @DisplayName("계좌 해지 성공")
     void successDeleteAccount() throws Exception {
         //given
         given(accountService.deleteAccount(anyLong(), anyString()))
@@ -116,6 +101,7 @@ class AccountControllerTest {
     }
 
     @Test
+    @DisplayName("계좌 조회 성공")
     void successGetAccountsByUserId() throws Exception {
         //given
         List<AccountDto> accountDtos =
