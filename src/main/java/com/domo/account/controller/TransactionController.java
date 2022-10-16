@@ -1,6 +1,8 @@
 package com.domo.account.controller;
 
+import com.domo.account.dto.TransactionDto;
 import com.domo.account.dto.UseBalance;
+import com.domo.account.exception.AccountException;
 import com.domo.account.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,11 +27,24 @@ public class TransactionController {
 
     @PostMapping("transaction/use")
     public UseBalance.Response useBalance(
-        @Valid @RequestBody UseBalance.Request request
-    ){
-
-
-        return null;
+            @Valid @RequestBody UseBalance.Request request
+    ) {
+        try {
+            return UseBalance.Response.from(
+                    transactionService.useBalance(
+                            request.getUserId(),
+                            request.getAccountNumber(),
+                            request.getAmount()
+                    )
+            );
+        } catch (AccountException e){
+            log.error("Failed to use Balance.");
+            transactionService.useFailedUseTransaction(
+                    request.getAccountNumber(),
+                    request.getAmount()
+            );
+            throw e;
+        }
     }
 }
 

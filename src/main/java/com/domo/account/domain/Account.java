@@ -1,6 +1,8 @@
 package com.domo.account.domain;
 
+import com.domo.account.exception.AccountException;
 import com.domo.account.type.AccountStatus;
+import com.domo.account.type.ErrorCode;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -40,4 +42,11 @@ public class Account {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    public void useBalance(Long amount) {
+        if (amount > balance) {
+            throw new AccountException(ErrorCode.AMOUNT_EXCEED_BALANCE);
+        }
+        balance -= amount;
+    }
 }
