@@ -1,6 +1,5 @@
 package com.domo.account.controller;
 
-import com.domo.account.dto.TransactionDto;
 import com.domo.account.dto.UseBalance;
 import com.domo.account.exception.AccountException;
 import com.domo.account.service.TransactionService;
@@ -39,7 +38,7 @@ public class TransactionController {
             );
         } catch (AccountException e){
             log.error("Failed to use Balance.");
-            transactionService.useFailedUseTransaction(
+            transactionService.saveFailedUseTransaction(
                     request.getAccountNumber(),
                     request.getAmount()
             );

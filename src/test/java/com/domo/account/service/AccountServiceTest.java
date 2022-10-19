@@ -4,9 +4,9 @@ import com.domo.account.domain.Account;
 import com.domo.account.domain.AccountUser;
 import com.domo.account.dto.AccountDto;
 import com.domo.account.exception.AccountException;
+import com.domo.account.repository.AccountRepository;
 import com.domo.account.repository.AccountUserRepository;
 import com.domo.account.type.AccountStatus;
-import com.domo.account.repository.AccountRepository;
 import com.domo.account.type.ErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,13 +16,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static com.domo.account.type.ErrorCode.USER_NOT_FOUND;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;

@@ -39,7 +39,6 @@ public class TransactionService {
         Account account = accountRepository.findByAccountNumber(accountNumber)
                 .orElseThrow(() -> new AccountException(ACCOUNT_NOT_FOUND));
         validateUseBalance(user, account, amount);
-
         account.useBalance(amount);
 
         return TransactionDto.fromEntity(
@@ -60,7 +59,7 @@ public class TransactionService {
     }
 
     @Transactional
-    public void useFailedUseTransaction(String accountNumber, Long amount) {
+    public void saveFailedUseTransaction(String accountNumber, Long amount) {
         Account account = accountRepository.findByAccountNumber(accountNumber)
                 .orElseThrow(() -> new AccountException(ACCOUNT_NOT_FOUND));
 
