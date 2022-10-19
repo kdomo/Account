@@ -36,7 +36,7 @@ class TransactionControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
-    @DisplayName("")
+    @DisplayName("잔액 사용")
     void successUseBalance() throws Exception {
         //given
         given(transactionService.useBalance(anyLong(), anyString(), anyLong()))
