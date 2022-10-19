@@ -4,7 +4,7 @@
 ---
 
 ### 활용 기능 소개
-- Spring Boot 2.7.x (JDK11)
+- Spring Boot 2.7.4 (JDK11)
 - Gradle
 - Junit5
 - H2 Database
