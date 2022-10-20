@@ -7,6 +7,13 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 public class CreateAccount {
+
+    /**
+     * {
+     *     "userId":1,
+     *     "initialBalance":100000
+     * }
+     */
     @Getter
     @Setter
     @NoArgsConstructor
@@ -21,6 +28,13 @@ public class CreateAccount {
         private Long initialBalance;
     }
 
+    /**
+     * {
+     *     "userId": 1,
+     *     "accountNumber": "1000000000",
+     *     "registeredAt": "2022-10-20T16:34:43.793822"
+     * }
+     */
     @Getter
     @Setter
     @NoArgsConstructor

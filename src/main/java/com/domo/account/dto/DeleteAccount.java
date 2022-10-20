@@ -9,6 +9,13 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 public class DeleteAccount {
+
+    /**
+     * {
+     *     "userId" : 1,
+     *     "accountNumber" : "1000000000"
+     * }
+     */
     @Getter
     @Setter
     @NoArgsConstructor
@@ -23,6 +30,13 @@ public class DeleteAccount {
         private String accountNumber;
     }
 
+    /**
+     * {
+     *     "userId": 1,
+     *     "accountNumber": "1000000000",
+     *     "unregisteredAt": "2022-10-20T16:38:21.444093"
+     * }
+     */
     @Getter
     @Setter
     @NoArgsConstructor

@@ -6,11 +6,10 @@ import lombok.*;
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 
-public class UseBalance {
-
+public class CancelBalance {
     /**
      * {
-     *     "userId" : 1,
+     *     "transactionId" : "72f032218a24448da84a7eb7a127a977",
      *     "accountNumber" : "1000000000",
      *     "amount" : 1000
      * }
@@ -20,9 +19,9 @@ public class UseBalance {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Request {
-        @NotNull
-        @Min(1)
-        private Long userId;
+
+        @NotBlank
+        private String transactionId;
 
 
         @NotBlank
@@ -36,13 +35,13 @@ public class UseBalance {
     }
 
     /**
-     * {
+     *  {
      *     "accountNumber": "1000000000",
      *     "transactionResultType": "S",
-     *     "transactionId": "72f032218a24448da84a7eb7a127a977",
+     *     "transactionId": "7b5daa649ee64ae9997c722d5466e51c",
      *     "amount": 1000,
-     *     "transactedAt": "2022-10-20T16:34:59.726587"
-     * }
+     *     "transactedAt": "2022-10-20T16:35:11.518305"
+     *  }
      */
     @Getter
     @Setter
@@ -56,7 +55,7 @@ public class UseBalance {
         private Long amount;
         private LocalDateTime transactedAt;
 
-        public static UseBalance.Response from(TransactionDto transactionDto) {
+        public static CancelBalance.Response from(TransactionDto transactionDto) {
             return Response.builder()
                     .accountNumber(transactionDto.getAccountNumber())
                     .transactionResultType(transactionDto.getTransactionResultType())
