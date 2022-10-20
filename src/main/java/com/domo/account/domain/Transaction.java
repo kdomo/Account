@@ -8,6 +8,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
@@ -17,7 +18,9 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Transaction {
+public class Transaction extends BaseEntity implements Serializable {
+    private static final long serialVersionUID = 6507099094905766398L;
+
     @Id
     @GeneratedValue
     private Long id;
@@ -39,9 +42,4 @@ public class Transaction {
 
     private LocalDateTime transactedAt;
 
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
 }

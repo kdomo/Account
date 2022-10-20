@@ -9,6 +9,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
@@ -18,7 +19,8 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Account {
+public class Account extends BaseEntity implements Serializable {
+    private static final long serialVersionUID = -5830042518681125649L;
 
     @Id
     @GeneratedValue
@@ -36,12 +38,6 @@ public class Account {
 
     private LocalDateTime registeredAt;
     private LocalDateTime unRegisteredAt;
-
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
 
     public void useBalance(Long amount) {
         if (amount > balance) {
