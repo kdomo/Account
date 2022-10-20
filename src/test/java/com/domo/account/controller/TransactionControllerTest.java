@@ -1,5 +1,6 @@
 package com.domo.account.controller;
 
+import com.domo.account.dto.CancelBalance;
 import com.domo.account.dto.TransactionDto;
 import com.domo.account.dto.UseBalance;
 import com.domo.account.service.TransactionService;
@@ -60,6 +61,35 @@ class TransactionControllerTest {
                 .andExpect(jsonPath("$.transactionResultType").value("S"))
                 .andExpect(jsonPath("$.transactionId").value("transactionId"))
                 .andExpect(jsonPath("$.amount").value(12345L))
+                .andDo(print());
+
+    }
+
+    @Test
+    @DisplayName("잔액 사용 취소")
+    void successCancelBalance() throws Exception {
+        //given
+        given(transactionService.cancelBalance(anyString(), anyString(), anyLong()))
+                .willReturn(TransactionDto.builder()
+                        .accountNumber("1000000000")
+                        .transactedAt(LocalDateTime.now())
+                        .amount(54321L)
+                        .transactionId("transactionIdForCancel")
+                        .transactionResultType(S)
+                        .build());
+
+        //when
+        //then
+        mockMvc.perform(post("/transaction/cancel")
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(
+                                new CancelBalance.Request("transactionId", "2000000000", 10000L)
+                        )))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.accountNumber").value("1000000000"))
+                .andExpect(jsonPath("$.transactionResultType").value("S"))
+                .andExpect(jsonPath("$.transactionId").value("transactionIdForCancel"))
+                .andExpect(jsonPath("$.amount").value(54321L))
                 .andDo(print());
 
     }

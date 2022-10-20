@@ -9,7 +9,6 @@ import com.domo.account.repository.AccountRepository;
 import com.domo.account.repository.AccountUserRepository;
 import com.domo.account.repository.TransactionRepository;
 import com.domo.account.type.AccountStatus;
-import com.domo.account.type.ErrorCode;
 import com.domo.account.type.TransactionResultType;
 import com.domo.account.type.TransactionType;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +21,10 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static com.domo.account.type.ErrorCode.*;
-import static com.domo.account.type.ErrorCode.AMOUNT_EXCEED_BALANCE;
-import static com.domo.account.type.TransactionResultType.*;
-import static com.domo.account.type.TransactionType.*;
+import static com.domo.account.type.TransactionResultType.F;
+import static com.domo.account.type.TransactionResultType.S;
+import static com.domo.account.type.TransactionType.CANCEL;
+import static com.domo.account.type.TransactionType.USE;
 
 @Slf4j
 @Service
@@ -91,7 +91,7 @@ public class TransactionService {
             Long amount
     ) {
         Transaction transaction = transactionRepository.findByTransactionId(transactionId)
-                        .orElseThrow(() -> new AccountException(ACCOUNT_NOT_FOUND));
+                        .orElseThrow(() -> new AccountException(TRANSACTION_NOT_FOUND));
         Account account = accountRepository.findByAccountNumber(accountNumber)
                 .orElseThrow(() -> new AccountException(ACCOUNT_NOT_FOUND));
 
