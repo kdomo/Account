@@ -22,6 +22,7 @@ import java.util.Optional;
 
 import static com.domo.account.type.AccountStatus.IN_USE;
 import static com.domo.account.type.AccountStatus.UNREGISTERED;
+import static com.domo.account.type.ErrorCode.*;
 import static com.domo.account.type.TransactionResultType.F;
 import static com.domo.account.type.TransactionResultType.S;
 import static com.domo.account.type.TransactionType.CANCEL;
@@ -104,7 +105,7 @@ class TransactionServiceTest {
                 () -> transactionService.useBalance(1L, "1000000000", 10000L));
 
         //then
-        assertEquals(ErrorCode.USER_NOT_FOUND, accountException.getErrorCode());
+        assertEquals(USER_NOT_FOUND, accountException.getErrorCode());
     }
 
     @Test
@@ -126,7 +127,7 @@ class TransactionServiceTest {
 
 
         //then
-        assertEquals(ErrorCode.ACCOUNT_NOT_FOUND, accountException.getErrorCode());
+        assertEquals(ACCOUNT_NOT_FOUND, accountException.getErrorCode());
     }
 
     @Test
@@ -153,7 +154,7 @@ class TransactionServiceTest {
                 () -> transactionService.useBalance(1L, "1000000000", 10000L));
 
         //then
-        assertEquals(ErrorCode.USER_ACCOUNT_UN_MATCH, accountException.getErrorCode());
+        assertEquals(USER_ACCOUNT_UN_MATCH, accountException.getErrorCode());
     }
 
     @Test
@@ -178,7 +179,7 @@ class TransactionServiceTest {
                 () -> transactionService.useBalance(1L, "1000000000", 10000L));
 
         //then
-        assertEquals(ErrorCode.ACCOUNT_ALREADY_UNREGISTERED, accountException.getErrorCode());
+        assertEquals(ACCOUNT_ALREADY_UNREGISTERED, accountException.getErrorCode());
     }
 
     @Test
@@ -204,7 +205,7 @@ class TransactionServiceTest {
 
         //then
         verify(transactionRepository, times(0)).save(any());
-        assertEquals(ErrorCode.AMOUNT_EXCEED_BALANCE, accountException.getErrorCode());
+        assertEquals(AMOUNT_EXCEED_BALANCE, accountException.getErrorCode());
     }
 
     @Test
@@ -324,7 +325,7 @@ class TransactionServiceTest {
         );
 
         //then
-        assertEquals(ErrorCode.TRANSACTION_NOT_FOUND, accountException.getErrorCode());
+        assertEquals(TRANSACTION_NOT_FOUND, accountException.getErrorCode());
     }
 
     @Test
@@ -346,7 +347,7 @@ class TransactionServiceTest {
         );
 
         //then
-        assertEquals(ErrorCode.ACCOUNT_NOT_FOUND, accountException.getErrorCode());
+        assertEquals(ACCOUNT_NOT_FOUND, accountException.getErrorCode());
     }
 
     @Test
@@ -397,7 +398,7 @@ class TransactionServiceTest {
         );
 
         //then
-        assertEquals(ErrorCode.TRANSACTION_ACCOUNT_UN_MATCH, accountException.getErrorCode());
+        assertEquals(TRANSACTION_ACCOUNT_UN_MATCH, accountException.getErrorCode());
     }
 
     @Test
@@ -437,7 +438,7 @@ class TransactionServiceTest {
         );
 
         //then
-        assertEquals(ErrorCode.CANCEL_MUST_FULLY, accountException.getErrorCode());
+        assertEquals(CANCEL_MUST_FULLY, accountException.getErrorCode());
     }
 
     @Test
@@ -477,6 +478,57 @@ class TransactionServiceTest {
         );
 
         //then
-        assertEquals(ErrorCode.TOO_OLD_ORDER_TO_CANCEL, accountException.getErrorCode());
+        assertEquals(TOO_OLD_ORDER_TO_CANCEL, accountException.getErrorCode());
+    }
+
+    @Test
+    @DisplayName("거래 조회 성공")
+    void successQueryTransaction() {
+        //given
+        Account account = Account.builder()
+                .accountStatus(IN_USE)
+                .balance(10000L)
+                .accountNumber("1000000000").build();
+        LocalDateTime now = LocalDateTime.now();
+        Transaction transaction = Transaction.builder()
+                .account(account)
+                .transactionType(USE)
+                .transactionResultType(S)
+                .transactionId("transactionId")
+                .transactedAt(now)
+                .amount(200L)
+                .balanceSnapshot(9800L)
+                .build();
+        given(transactionRepository.findByTransactionId(anyString()))
+                .willReturn(Optional.of(transaction));
+
+        //when
+        TransactionDto transactionDto = transactionService.queryTransaction(
+                ("transactionId")
+        );
+        //then
+
+        assertEquals("1000000000", transactionDto.getAccountNumber());
+        assertEquals(S, transactionDto.getTransactionResultType());
+        assertEquals(USE, transactionDto.getTransactionType());
+        assertEquals("transactionId", transactionDto.getTransactionId());
+        assertEquals(200L, transactionDto.getAmount());
+        assertEquals(now, transactionDto.getTransactedAt());
+    }
+
+    @Test
+    @DisplayName("거래 조회 실패 - 거래 내역 없음")
+    void failQueryTransaction_TransactionNotFound() {
+        //given
+        given(transactionRepository.findByTransactionId(anyString()))
+                .willReturn(Optional.empty());
+
+        //when
+        AccountException accountException = assertThrows(AccountException.class,
+                () -> transactionService.queryTransaction("transactionId"));
+
+        //then
+        assertEquals(TRANSACTION_NOT_FOUND, accountException.getErrorCode());
+
     }
 }
