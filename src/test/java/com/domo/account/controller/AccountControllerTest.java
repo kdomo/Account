@@ -1,13 +1,9 @@
 package com.domo.account.controller;
 
-import com.domo.account.domain.Account;
 import com.domo.account.dto.AccountDto;
 import com.domo.account.dto.CreateAccount;
 import com.domo.account.dto.DeleteAccount;
-import com.domo.account.type.AccountStatus;
 import com.domo.account.service.AccountService;
-import com.domo.account.service.RedisTestService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,9 +29,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AccountControllerTest {
     @MockBean
     private AccountService accountService;
-
-    @MockBean
-    private RedisTestService redisTestService;
 
     @Autowired
     private MockMvc mockMvc;

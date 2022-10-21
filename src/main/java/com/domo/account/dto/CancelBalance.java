@@ -1,5 +1,6 @@
 package com.domo.account.dto;
 
+import com.domo.account.aop.AccountLockIdInterface;
 import com.domo.account.type.TransactionResultType;
 import lombok.*;
 
@@ -18,7 +19,7 @@ public class CancelBalance {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class Request {
+    public static class Request implements AccountLockIdInterface {
 
         @NotBlank
         private String transactionId;

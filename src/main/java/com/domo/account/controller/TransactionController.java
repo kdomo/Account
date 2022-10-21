@@ -1,5 +1,6 @@
 package com.domo.account.controller;
 
+import com.domo.account.aop.AccountLock;
 import com.domo.account.dto.CancelBalance;
 import com.domo.account.dto.QueryTransactionResponse;
 import com.domo.account.dto.UseBalance;
@@ -10,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 
 /**
  * 잔액 관련 컨트롤러
@@ -26,6 +26,7 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @PostMapping("transaction/use")
+    @AccountLock
     public UseBalance.Response useBalance(
             @Valid @RequestBody UseBalance.Request request
     ) {
@@ -48,6 +49,7 @@ public class TransactionController {
     }
 
     @PostMapping("transaction/cancel")
+    @AccountLock
     public CancelBalance.Response cancelBalance(
             @Valid @RequestBody CancelBalance.Request request
     ) {

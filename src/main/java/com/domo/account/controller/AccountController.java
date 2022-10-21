@@ -1,11 +1,9 @@
 package com.domo.account.controller;
 
-import com.domo.account.domain.Account;
 import com.domo.account.dto.AccountInfo;
 import com.domo.account.dto.CreateAccount;
 import com.domo.account.dto.DeleteAccount;
 import com.domo.account.service.AccountService;
-import com.domo.account.service.RedisTestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,8 +15,6 @@ import java.util.stream.Collectors;
 @RestController
 public class AccountController {
     private final AccountService accountService;
-    private final RedisTestService redisTestService;
-
 
     @PostMapping("/account")
     public CreateAccount.Response createAccount(
@@ -49,11 +45,6 @@ public class AccountController {
                                 .balance(accountDto.getBalance())
                                 .build()
                 ).collect(Collectors.toList());
-    }
-
-    @GetMapping("get-lock")
-    public String getLock() {
-        return redisTestService.getLock();
     }
 
 //    @GetMapping("/account/{id}")

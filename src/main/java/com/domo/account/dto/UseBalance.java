@@ -1,5 +1,6 @@
 package com.domo.account.dto;
 
+import com.domo.account.aop.AccountLockIdInterface;
 import com.domo.account.type.TransactionResultType;
 import lombok.*;
 
@@ -19,7 +20,7 @@ public class UseBalance {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class Request {
+    public static class Request implements AccountLockIdInterface {
         @NotNull
         @Min(1)
         private Long userId;
