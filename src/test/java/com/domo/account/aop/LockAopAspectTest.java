@@ -5,6 +5,7 @@ import com.domo.account.exception.AccountException;
 import com.domo.account.service.LockService;
 import com.domo.account.type.ErrorCode;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -30,6 +31,7 @@ class LockAopAspectTest {
     private LockAopAspect lockAopAspect;
 
     @Test
+    @DisplayName("락 획득 성공")
     void lockAndUnlock() throws Throwable {
         //given
         ArgumentCaptor<String> lockArgumentCaptor =
@@ -55,6 +57,7 @@ class LockAopAspectTest {
     }
 
     @Test
+    @DisplayName("Exception 발생 시 언락 성공")
     void lockAndUnlock_evenIfThorw() throws Throwable {
         //given
         ArgumentCaptor<String> lockArgumentCaptor =
