@@ -57,7 +57,7 @@ class LockAopAspectTest {
     }
 
     @Test
-    @DisplayName("Exception 발생 시 언락 성공")
+    @DisplayName("언락 성공 - Exception 발생 시")
     void lockAndUnlock_evenIfThorw() throws Throwable {
         //given
         ArgumentCaptor<String> lockArgumentCaptor =

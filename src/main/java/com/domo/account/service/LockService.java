@@ -40,7 +40,7 @@ public class LockService {
         log.debug("Unlock for accountNumber : {} ", accountNumber);
         RLock lock = redissonClient.getLock(getLockKey(accountNumber));
         if(lock.isLocked()){
-            redissonClient.getLock(getLockKey(accountNumber)).unlock();
+            redissonClient.getLock(getLockKey(accountNumber));
         }
     }
 
