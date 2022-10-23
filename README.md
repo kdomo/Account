@@ -88,11 +88,11 @@ GET /account?user_id={userId}
 [
   {
     "accountNumber":"1000000000"
-    "balance": 1000L
+    "balance": 1000
   },
   {
     "accountNumber":"1000000001"
-    "balance": 1000L
+    "balance": 1000
   },
 ]
 ```
