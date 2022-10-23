@@ -224,3 +224,33 @@ GET /transaction/{transactionId}
 
 </div>
 </details>
+
+<details>
+<summary>동시성 이슈</summary>
+<div markdown="1">
+  
+##### 동시성 이슈란?
+
+여러 요청이 동일한 자원에 접근하며 발생하는 문제들을 통칭, 주로 DB에서 동일한 레코드를 동시 접근하며 문제가 발생
+<img width="631" alt="image" src="https://user-images.githubusercontent.com/64088250/197383852-850b766c-89ab-4e3d-b7a1-96ab4245f52c.png">
+  
+- 1번, 2번 요청이 거의 동시에 요청된 케이스
+  - #1에서 잔액 9천원 업데이트와 1000원 거래 저장이 발생
+  - #2에서도 잔액 9천원 업데이트와 1000원 거래 저장이 발생
+  - 결론 : 잔액은 9천원이지만 1000원 거래가 2건 저장됨
+
+##### 해결 방안
+기타 인프라(Redis)를 활용해 동시성을 제어 (어노테이션을 활용한 AOP를 사용)
+<img width="630" alt="image" src="https://user-images.githubusercontent.com/64088250/197383945-d39f8969-d278-45a7-a168-17599ac792e2.png">
+
+##### Redisson의 분산락
+  
+- 여러 독립된 프로세스에서 하나의 자원을 공유해야 할 때, 데이터에 결함이 발생하지 않도록 하기 위해서 분산 락을 활용할 수 있습니다.
+- 분산 락을 구현하기 위해서는 데이터베이스 등 여러 프로세스가 공통으로 사용하는 저장소를 활용해야 하는데, 이번 프로젝트에서는 Redis의 클라이언트인 Redisson 분산락을 활용하여 동시성 이슈를 처리하였습니다.
+  
+> Distributed locks are a very useful primitive in many environments where different processes must operate with shared resources in a mutually exclusive way.
+
+레디스 공식 홈페이지를 보면 분산락은 서로 다른 프로세스가 상호 배타적인 방식으로 공유 리소스로 작동해야 하는 많은 환경에서 매우 유용한 기본 요소라고 설명하고 있습니다.
+
+</div>
+</details>
