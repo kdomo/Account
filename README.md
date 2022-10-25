@@ -9,7 +9,7 @@
 - Junit5
 - H2 Database
 - JPA
-- Redis(Redisson)
+- Redis(Redisson) (In the docker container v20.10.17)
 - Mockit
 
 --- 
