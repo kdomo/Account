@@ -1,13 +1,13 @@
 package com.domo.account.exception;
 
-import com.domo.account.type.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import static com.domo.account.type.ErrorCode.*;
+import static com.domo.account.type.ErrorCode.INTERNAL_SERVER_ERROR;
+import static com.domo.account.type.ErrorCode.INVALID_REUQEST;
 
 @Slf4j
 @RestControllerAdvice

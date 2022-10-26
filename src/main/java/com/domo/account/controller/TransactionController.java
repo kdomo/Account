@@ -38,7 +38,7 @@ public class TransactionController {
                             request.getAmount()
                     )
             );
-        } catch (AccountException e){
+        } catch (AccountException e) {
             log.error("Failed to use Balance.");
             transactionService.saveFailedUseTransaction(
                     request.getAccountNumber(),
@@ -61,7 +61,7 @@ public class TransactionController {
                             request.getAmount()
                     )
             );
-        } catch (AccountException e){
+        } catch (AccountException e) {
             log.error("Failed to use Balance.");
             transactionService.saveFailedCancelTransaction(
                     request.getAccountNumber(),
@@ -73,7 +73,7 @@ public class TransactionController {
 
     @GetMapping("transaction/{transactionId}")
     public QueryTransactionResponse queryTransactionResponse(
-            @PathVariable String transactionId){
+            @PathVariable String transactionId) {
         return QueryTransactionResponse.from(
                 transactionService.queryTransaction(transactionId)
         );

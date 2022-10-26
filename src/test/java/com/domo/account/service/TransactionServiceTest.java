@@ -8,7 +8,6 @@ import com.domo.account.exception.AccountException;
 import com.domo.account.repository.AccountRepository;
 import com.domo.account.repository.AccountUserRepository;
 import com.domo.account.repository.TransactionRepository;
-import com.domo.account.type.ErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

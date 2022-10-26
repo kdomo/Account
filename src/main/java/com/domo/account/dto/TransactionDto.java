@@ -1,14 +1,10 @@
 package com.domo.account.dto;
 
-import com.domo.account.domain.Account;
 import com.domo.account.domain.Transaction;
 import com.domo.account.type.TransactionResultType;
 import com.domo.account.type.TransactionType;
 import lombok.*;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
 @Getter
@@ -25,7 +21,7 @@ public class TransactionDto {
     private String transactionId;
     private LocalDateTime transactedAt;
 
-    public static TransactionDto fromEntity(Transaction transaction){
+    public static TransactionDto fromEntity(Transaction transaction) {
         return TransactionDto.builder()
                 .accountNumber(transaction.getAccount().getAccountNumber())
                 .transactionType(transaction.getTransactionType())

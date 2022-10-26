@@ -4,8 +4,6 @@ import com.domo.account.exception.AccountException;
 import com.domo.account.type.AccountStatus;
 import com.domo.account.type.ErrorCode;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;

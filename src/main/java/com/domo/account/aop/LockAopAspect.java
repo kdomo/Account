@@ -22,7 +22,7 @@ public class LockAopAspect {
     ) throws Throwable {
         //lock 획득 시도
         lockService.lock(request.getAccountNumber());
-        try{
+        try {
             return pjp.proceed();
         } finally {
             //lock 해제

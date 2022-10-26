@@ -6,7 +6,6 @@ import com.domo.account.dto.AccountDto;
 import com.domo.account.exception.AccountException;
 import com.domo.account.repository.AccountRepository;
 import com.domo.account.repository.AccountUserRepository;
-import com.domo.account.type.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,6 @@
 package com.domo.account.service;
 
 import com.domo.account.exception.AccountException;
-import com.domo.account.type.ErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,7 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 
-import static com.domo.account.type.ErrorCode.*;
+import static com.domo.account.type.ErrorCode.ACCOUNT_TRANSACTION_LOCK;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
